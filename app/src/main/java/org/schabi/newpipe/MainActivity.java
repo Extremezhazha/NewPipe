@@ -57,6 +57,7 @@ import org.schabi.newpipe.fragments.BackPressable;
 import org.schabi.newpipe.fragments.MainFragment;
 import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
 import org.schabi.newpipe.fragments.list.search.SearchFragment;
+import org.schabi.newpipe.manager.ModuleManager;
 import org.schabi.newpipe.report.ErrorActivity;
 import org.schabi.newpipe.util.Constants;
 import org.schabi.newpipe.util.KioskTranslator;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG) Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
+        ModuleManager.yes(this);
 
         ThemeHelper.setTheme(this, ServiceHelper.getSelectedServiceId(this));
 
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         int kioskId = 0;
 
         for (final String ks : service.getKioskList().getAvailableKiosks()) {
+            if (DEBUG) Log.d(TAG, "drawer item: " + ks);
             drawerItems.getMenu()
                     .add(R.id.menu_tabs_group, kioskId, 0, KioskTranslator.getTranslatedKioskName(ks, this))
                     .setIcon(KioskTranslator.getKioskIcons(ks, this));
@@ -178,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     toggleServices();
                 }
                 if (lastService != ServiceHelper.getSelectedServiceId(MainActivity.this)) {
+                    // Main Activity Restarted!
                     new Handler(Looper.getMainLooper()).post(MainActivity.this::recreate);
                 }
             }
@@ -191,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getGroupId()) {
             case R.id.menu_services_group:
                 changeService(item);
+                if (DEBUG) Log.d(TAG, "service change = [" + item.getItemId() + "]");
                 break;
             case R.id.menu_tabs_group:
                 try {
@@ -207,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         drawer.closeDrawers();
+        Log.d("AAA", "not dead yet");
         return true;
     }
 
@@ -350,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.d("AAA","Whut");
         super.onDestroy();
         if (!isChangingConfigurations()) {
             StateSaver.clearStateFiles();

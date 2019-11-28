@@ -49,7 +49,6 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.ReCaptchaActivity;
-import org.schabi.newpipe.download.DownloadDialog;
 import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.ServiceList;
@@ -69,6 +68,7 @@ import org.schabi.newpipe.fragments.list.comments.CommentsFragment;
 import org.schabi.newpipe.fragments.list.videos.RelatedVideosFragment;
 import org.schabi.newpipe.local.dialog.PlaylistAppendDialog;
 import org.schabi.newpipe.local.history.HistoryRecordManager;
+import org.schabi.newpipe.manager.ModuleManager;
 import org.schabi.newpipe.player.MainVideoPlayer;
 import org.schabi.newpipe.player.PopupVideoPlayer;
 import org.schabi.newpipe.player.playqueue.PlayQueue;
@@ -117,6 +117,9 @@ public class VideoDetailFragment
     private static final int RESOLUTIONS_MENU_UPDATE_FLAG = 0x2;
     private static final int TOOLBAR_ITEMS_UPDATE_FLAG = 0x4;
     private static final int COMMENTS_UPDATE_FLAG = 0x8;
+
+    public static final String CURRENT_INFO_TAG = "CURRENT_INFO";
+    public static final String SELECTED_INDEX_TAG = "SELECTED_INDEX";
 
     private boolean autoPlayEnabled;
     private boolean showRelatedStreams;
@@ -1168,13 +1171,12 @@ public class VideoDetailFragment
 
     public void openDownloadDialog() {
             try {
-                DownloadDialog downloadDialog = DownloadDialog.newInstance(currentInfo);
-                downloadDialog.setVideoStreams(sortedVideoStreams);
-                downloadDialog.setAudioStreams(currentInfo.getAudioStreams());
-                downloadDialog.setSelectedVideoStream(selectedVideoStreamIndex);
-                downloadDialog.setSubtitleStreams(currentInfo.getSubtitles());
+                Intent initIntent = ModuleManager.getDownloadDialogIntent(getActivity());
 
-                downloadDialog.show(getActivity().getSupportFragmentManager(), "downloadDialog");
+                initIntent.putExtra(CURRENT_INFO_TAG, currentInfo);
+                initIntent.putExtra(SELECTED_INDEX_TAG, selectedVideoStreamIndex);
+                startActivity(initIntent);
+
             } catch (Exception e) {
                 ErrorActivity.ErrorInfo info = ErrorActivity.ErrorInfo.make(UserAction.UI_ERROR,
                         ServiceList.all()

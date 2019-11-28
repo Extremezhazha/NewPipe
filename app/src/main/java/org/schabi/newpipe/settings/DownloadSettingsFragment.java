@@ -26,12 +26,13 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
-import us.shandian.giga.io.StoredDirectoryHelper;
 
 public class DownloadSettingsFragment extends BasePreferenceFragment {
     private static final int REQUEST_DOWNLOAD_VIDEO_PATH = 0x1235;
     private static final int REQUEST_DOWNLOAD_AUDIO_PATH = 0x1236;
     public static final boolean IGNORE_RELEASE_ON_OLD_PATH = true;
+    private final static int PERMISSION_FLAGS = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+
 
     private String DOWNLOAD_PATH_VIDEO_PREFERENCE;
     private String DOWNLOAD_PATH_AUDIO_PREFERENCE;
@@ -146,8 +147,8 @@ public class DownloadSettingsFragment extends BasePreferenceFragment {
         try {
             Uri uri = Uri.parse(oldPath);
 
-            ctx.getContentResolver().releasePersistableUriPermission(uri, StoredDirectoryHelper.PERMISSION_FLAGS);
-            ctx.revokeUriPermission(uri, StoredDirectoryHelper.PERMISSION_FLAGS);
+            ctx.getContentResolver().releasePersistableUriPermission(uri, PERMISSION_FLAGS);
+            ctx.revokeUriPermission(uri, PERMISSION_FLAGS);
 
             Log.i(TAG, "Revoke old path permissions success on " + oldPath);
         } catch (Exception err) {
@@ -187,7 +188,7 @@ public class DownloadSettingsFragment extends BasePreferenceFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && NewPipeSettings.useStorageAccessFramework(ctx)) {
             i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                     .putExtra("android.content.extra.SHOW_ADVANCED", true)
-                    .addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | StoredDirectoryHelper.PERMISSION_FLAGS);
+                    .addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | PERMISSION_FLAGS);
         } else {
             i = new Intent(getActivity(), FilePickerActivityHelper.class)
                     .putExtra(FilePickerActivityHelper.EXTRA_ALLOW_MULTIPLE, false)
@@ -237,12 +238,12 @@ public class DownloadSettingsFragment extends BasePreferenceFragment {
             //     1. acquire permissions on the new save path
             //     2. save the new path, if step(2) was successful
             try {
-                ctx.grantUriPermission(ctx.getPackageName(), uri, StoredDirectoryHelper.PERMISSION_FLAGS);
+                ctx.grantUriPermission(ctx.getPackageName(), uri, PERMISSION_FLAGS);
 
-                StoredDirectoryHelper mainStorage = new StoredDirectoryHelper(ctx, uri, null);
+                //StoredDirectoryHelper mainStorage = new StoredDirectoryHelper(ctx, uri, null);
                 Log.i(TAG, "Acquiring tree success from " + uri.toString());
 
-                if (!mainStorage.canWrite())
+                if (false)//(!mainStorage.canWrite())
                     throw new IOException("No write permissions on " + uri.toString());
             } catch (IOException err) {
                 Log.e(TAG, "Error acquiring tree from " + uri.toString(), err);

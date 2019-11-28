@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 
-import org.schabi.newpipe.download.DownloadDialog;
+//import org.schabi.newpipe.download.DownloadDialog;
 import org.schabi.newpipe.extractor.Info;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.StreamingService;
@@ -38,6 +38,7 @@ import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.playlist.PlaylistInfo;
 import org.schabi.newpipe.extractor.stream.StreamInfo;
 import org.schabi.newpipe.extractor.stream.VideoStream;
+import org.schabi.newpipe.manager.ModuleManager;
 import org.schabi.newpipe.player.playqueue.ChannelPlayQueue;
 import org.schabi.newpipe.player.playqueue.PlayQueue;
 import org.schabi.newpipe.player.playqueue.PlaylistPlayQueue;
@@ -69,6 +70,8 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.schabi.newpipe.extractor.StreamingService.ServiceInfo.MediaCapability.AUDIO;
 import static org.schabi.newpipe.extractor.StreamingService.ServiceInfo.MediaCapability.VIDEO;
+import static org.schabi.newpipe.fragments.detail.VideoDetailFragment.CURRENT_INFO_TAG;
+import static org.schabi.newpipe.fragments.detail.VideoDetailFragment.SELECTED_INDEX_TAG;
 import static org.schabi.newpipe.util.ThemeHelper.resolveResourceIdFromAttr;
 
 /**
@@ -435,7 +438,7 @@ public class RouterActivity extends AppCompatActivity {
                     int selectedVideoStreamIndex = ListHelper.getDefaultResolutionIndex(this,
                             sortedVideoStreams);
 
-                    FragmentManager fm = getSupportFragmentManager();
+                    /*FragmentManager fm = getSupportFragmentManager();
                     DownloadDialog downloadDialog = DownloadDialog.newInstance(result);
                     downloadDialog.setVideoStreams(sortedVideoStreams);
                     downloadDialog.setAudioStreams(result.getAudioStreams());
@@ -444,7 +447,13 @@ public class RouterActivity extends AppCompatActivity {
                     fm.executePendingTransactions();
                     downloadDialog.getDialog().setOnDismissListener(dialog -> {
                         finish();
-                    });
+                    });*/
+                    Intent initIntent = ModuleManager.getDownloadDialogIntent(this);
+
+                    initIntent.putExtra(CURRENT_INFO_TAG, result);
+                    initIntent.putExtra(SELECTED_INDEX_TAG, selectedVideoStreamIndex);
+                    this.startActivity(initIntent);
+
                 }, (@NonNull Throwable throwable) -> {
                     onError();
                 });

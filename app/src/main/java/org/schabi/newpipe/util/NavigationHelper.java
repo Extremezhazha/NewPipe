@@ -23,7 +23,6 @@ import org.schabi.newpipe.MainActivity;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.RouterActivity;
 import org.schabi.newpipe.about.AboutActivity;
-import org.schabi.newpipe.download.DownloadActivity;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
@@ -44,6 +43,7 @@ import org.schabi.newpipe.local.history.StatisticsPlaylistFragment;
 import org.schabi.newpipe.local.playlist.LocalPlaylistFragment;
 import org.schabi.newpipe.local.subscription.SubscriptionFragment;
 import org.schabi.newpipe.local.subscription.SubscriptionsImportFragment;
+import org.schabi.newpipe.manager.ModuleManager;
 import org.schabi.newpipe.player.BackgroundPlayer;
 import org.schabi.newpipe.player.BackgroundPlayerActivity;
 import org.schabi.newpipe.player.BasePlayer;
@@ -354,6 +354,8 @@ public class NavigationHelper {
     }
 
     public static void openSubscriptionFragment(FragmentManager fragmentManager) {
+
+        Log.d("Navi Helper", "go sub");
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_holder, new SubscriptionFragment())
                 .addToBackStack(null)
@@ -449,7 +451,7 @@ public class NavigationHelper {
         if (!PermissionHelper.checkStoragePermissions(activity, PermissionHelper.DOWNLOADS_REQUEST_CODE)) {
             return false;
         }
-        Intent intent = new Intent(activity, DownloadActivity.class);
+        Intent intent = ModuleManager.getDownloadActivityIntent(activity);
         activity.startActivity(intent);
         return true;
     }

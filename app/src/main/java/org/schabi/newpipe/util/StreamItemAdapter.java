@@ -25,7 +25,7 @@ import java.util.concurrent.Callable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import us.shandian.giga.util.Utility;
+//import Utility;
 
 /**
  * A list adapter for a list of {@link Stream streams},
@@ -84,6 +84,18 @@ public class StreamItemAdapter<T extends Stream, U extends Stream> extends BaseA
         return getCustomView(((Spinner) parent).getSelectedItemPosition(), convertView, parent, false);
     }
 
+    private static String formatBytes(long bytes) {
+        if (bytes < 1024) {
+            return String.format("%d B", bytes);
+        } else if (bytes < 1024 * 1024) {
+            return String.format("%.2f kB", bytes / 1024d);
+        } else if (bytes < 1024 * 1024 * 1024) {
+            return String.format("%.2f MB", bytes / 1024d / 1024d);
+        } else {
+            return String.format("%.2f GB", bytes / 1024d / 1024d / 1024d);
+        }
+    }
+
     private View getCustomView(int position, View convertView, ViewGroup parent, boolean isDropdownItem) {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.stream_quality_item, parent, false);
@@ -128,7 +140,7 @@ public class StreamItemAdapter<T extends Stream, U extends Stream> extends BaseA
             SecondaryStreamHelper secondary = secondaryStreams == null ? null : secondaryStreams.get(position);
             if (secondary != null) {
                 long size = secondary.getSizeInBytes() + streamsWrapper.getSizeInBytes(position);
-                sizeView.setText(Utility.formatBytes(size));
+                sizeView.setText(formatBytes(size));
             } else {
                 sizeView.setText(streamsWrapper.getFormattedSize(position));
             }
@@ -217,7 +229,7 @@ public class StreamItemAdapter<T extends Stream, U extends Stream> extends BaseA
 
         private String formatSize(long size) {
             if (size > -1) {
-                return Utility.formatBytes(size);
+                return formatBytes(size);
             }
             return unknownSize;
         }

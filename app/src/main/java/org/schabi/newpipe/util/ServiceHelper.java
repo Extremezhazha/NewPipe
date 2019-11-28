@@ -2,6 +2,8 @@ package org.schabi.newpipe.util;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
@@ -95,6 +97,7 @@ public class ServiceHelper {
     }
 
     public static void setSelectedServiceId(Context context, int serviceId) {
+        Log.d("CCC", "im here");
         String serviceName;
         try {
             serviceName = NewPipe.getService(serviceId).getServiceInfo().getName();

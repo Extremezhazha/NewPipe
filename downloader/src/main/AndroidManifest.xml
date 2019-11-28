@@ -1,0 +1,28 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="org.schabi.newpipe.downloader">
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_downloader">
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+
+    <application>
+
+        <activity
+            android:name="org.schabi.newpipe.downloader.download.DownloadActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" />
+        <activity
+            android:name="org.schabi.newpipe.downloader.download.DownloadInitActivity"
+            android:launchMode="singleTask">
+
+        </activity>
+        <service android:name="us.shandian.giga.service.DownloadManagerService" />
+    </application>
+</manifest>
+

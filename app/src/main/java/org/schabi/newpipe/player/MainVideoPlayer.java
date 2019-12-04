@@ -235,7 +235,6 @@ public final class MainVideoPlayer extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d("BBBmvp", "me");
         if (DEBUG) Log.d(TAG, "onSaveInstanceState() called");
         super.onSaveInstanceState(outState);
         if (playerImpl == null) return;

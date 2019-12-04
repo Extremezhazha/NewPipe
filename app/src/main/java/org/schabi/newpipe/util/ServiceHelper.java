@@ -97,7 +97,6 @@ public class ServiceHelper {
     }
 
     public static void setSelectedServiceId(Context context, int serviceId) {
-        Log.d("CCC", "im here");
         String serviceName;
         try {
             serviceName = NewPipe.getService(serviceId).getServiceInfo().getName();

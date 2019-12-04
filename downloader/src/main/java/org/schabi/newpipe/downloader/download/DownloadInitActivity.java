@@ -1,16 +1,18 @@
 package org.schabi.newpipe.downloader.download;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.schabi.newpipe.RouterActivity;
 import org.schabi.newpipe.downloader.R;
+import org.schabi.newpipe.extractor.ServiceList;
 import org.schabi.newpipe.extractor.stream.StreamInfo;
 import org.schabi.newpipe.extractor.stream.VideoStream;
 import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
+import org.schabi.newpipe.report.ErrorActivity;
+import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.ListHelper;
 import org.schabi.newpipe.util.ThemeHelper;
 
@@ -21,6 +23,8 @@ public class DownloadInitActivity extends AppCompatActivity {
     StreamInfo currentInfo = null;
     List<VideoStream> sortedVideoStreams = null;
 
+    boolean isFromRouter = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +33,9 @@ public class DownloadInitActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        try {
-            Log.d("Whoa", "Here we go?");
+        isFromRouter = intent.getBooleanExtra(RouterActivity.IS_FROM_ROUTER, false);
 
-            //currentInfo = (StreamInfo) ObjectSideChannel.getInstance().get("1");
+        try {
             currentInfo = (StreamInfo) intent.getSerializableExtra(VideoDetailFragment.CURRENT_INFO_TAG);
             sortedVideoStreams = ListHelper.getSortedStreamVideosList(
                     this,
@@ -48,31 +51,27 @@ public class DownloadInitActivity extends AppCompatActivity {
             downloadDialog.setSelectedVideoStream(selectedVideoStreamIndex);
             downloadDialog.setSubtitleStreams(currentInfo.getSubtitles());
 
-            FragmentManager fm = getSupportFragmentManager();
+            downloadDialog.show(getSupportFragmentManager(), "downloadDialog");
 
-            downloadDialog.show(fm, "downloadDialog");
-
-            fm.executePendingTransactions();
-
-            //downloadDialog.getDialog().setOnDismissListener(dialog -> finish());
-            //finish();
-            downloadDialog.setDialogListener(dialog -> finish());
+            downloadDialog.setDialogListener(dialog -> {
+                if (isFromRouter && RouterActivity.instance != null)
+                    RouterActivity.instance.finish();
+                finish();
+            });
         } catch (Exception e) {
-            Log.d("Whoa", "there");
-            Log.d("Whoa", e.toString());
-            /*
+
             ErrorActivity.ErrorInfo info = ErrorActivity.ErrorInfo.make(UserAction.UI_ERROR,
                     ServiceList.all()
                             .get(currentInfo
                                     .getServiceId())
                             .getServiceInfo()
                             .getName(), "",
-                    R.string.could_not_setup_download_menu);
+                    org.schabi.newpipe.R.string.could_not_setup_download_menu);
 
-            ErrorActivity.reportError(getActivity(),
+            ErrorActivity.reportError(this,
                     e,
-                    getActivity().getClass(),
-                    getActivity().findViewById(android.R.id.content), info);*/
+                    this.getClass(),
+                    this.findViewById(android.R.id.content), info);
         }
     }
 }

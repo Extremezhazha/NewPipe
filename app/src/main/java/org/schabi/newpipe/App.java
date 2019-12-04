@@ -23,6 +23,7 @@ import org.acra.config.ConfigurationBuilder;
 import org.acra.sender.ReportSenderFactory;
 import org.schabi.newpipe.extractor.Downloader;
 import org.schabi.newpipe.extractor.NewPipe;
+import org.schabi.newpipe.manager.ModuleManager;
 import org.schabi.newpipe.report.AcraReportSenderFactory;
 import org.schabi.newpipe.report.ErrorActivity;
 import org.schabi.newpipe.report.UserAction;
@@ -106,6 +107,7 @@ public class App extends Application {
 
         // Check for new version
         new CheckForNewAppVersionTask().execute();
+        ModuleManager.start(this);
     }
 
     protected Downloader getDownloader() {

@@ -45,6 +45,17 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".manager.ModuleManager"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".player.BackgroundPlayerActivity"
             android:label="@string/title_activity_background_player"
@@ -119,6 +130,7 @@
             android:excludeFromRecents="true"
             android:label="@string/preferred_open_action_share_menu_title"
             android:taskAffinity=""
+            android:launchMode="singleInstance"
             android:theme="@style/RouterActivityThemeDark">
 
             <!-- Youtube filter -->

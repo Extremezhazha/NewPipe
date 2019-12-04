@@ -14,11 +14,11 @@
     </dist:module>
 
     <application>
-
         <service
             android:name=".LoadYoutubeSupportService"
             android:enabled="true"
             android:exported="false" />
     </application>
+
 
 </manifest>

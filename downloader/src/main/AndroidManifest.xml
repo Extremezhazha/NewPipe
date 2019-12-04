@@ -1,6 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="org.schabi.newpipe.downloader">
+
+
 
     <dist:module
         dist:instant="false"
@@ -11,7 +14,8 @@
         <dist:fusing dist:include="true" />
     </dist:module>
 
-    <application>
+    <application
+        android:name="com.google.android.play.core.splitcompat.SplitCompat">
 
         <activity
             android:name="org.schabi.newpipe.downloader.download.DownloadActivity"

@@ -355,7 +355,6 @@ public class NavigationHelper {
 
     public static void openSubscriptionFragment(FragmentManager fragmentManager) {
 
-        Log.d("Navi Helper", "go sub");
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_holder, new SubscriptionFragment())
                 .addToBackStack(null)

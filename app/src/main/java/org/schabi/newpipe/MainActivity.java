@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG) Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
-        ModuleManager.yes(this);
+        ModuleManager.loadExtServices(this);
 
         ThemeHelper.setTheme(this, ServiceHelper.getSelectedServiceId(this));
 
@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         //Tabs
         int currentServiceId = ServiceHelper.getSelectedServiceId(this);
         StreamingService service = NewPipe.getService(currentServiceId);
+        Log.d("FUCK", service.toString() + currentServiceId);
 
         int kioskId = 0;
 
@@ -212,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         drawer.closeDrawers();
-        Log.d("AAA", "not dead yet");
         return true;
     }
 
@@ -356,7 +356,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.d("AAA","Whut");
         super.onDestroy();
         if (!isChangingConfigurations()) {
             StateSaver.clearStateFiles();

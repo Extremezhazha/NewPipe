@@ -26,9 +26,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.fragment.app.FragmentManager;
-
-//import org.schabi.newpipe.download.DownloadDialog;
 import org.schabi.newpipe.extractor.Info;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.StreamingService;
@@ -79,6 +76,10 @@ import static org.schabi.newpipe.util.ThemeHelper.resolveResourceIdFromAttr;
  */
 public class RouterActivity extends AppCompatActivity {
 
+    public static RouterActivity instance;
+
+    public static final String IS_FROM_ROUTER = "FROM_ROUTER";
+
     @State
     protected int currentServiceId = -1;
     private StreamingService currentService;
@@ -99,6 +100,7 @@ public class RouterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         Icepick.restoreInstanceState(this, savedInstanceState);
 
         if (TextUtils.isEmpty(currentUrl)) {
@@ -132,7 +134,7 @@ public class RouterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        instance = null;
         disposables.clear();
     }
 
@@ -452,6 +454,7 @@ public class RouterActivity extends AppCompatActivity {
 
                     initIntent.putExtra(CURRENT_INFO_TAG, result);
                     initIntent.putExtra(SELECTED_INDEX_TAG, selectedVideoStreamIndex);
+                    initIntent.putExtra(IS_FROM_ROUTER, true);
                     this.startActivity(initIntent);
 
                 }, (@NonNull Throwable throwable) -> {

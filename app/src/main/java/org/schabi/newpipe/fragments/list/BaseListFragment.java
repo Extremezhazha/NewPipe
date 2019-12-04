@@ -125,7 +125,6 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
     @Override
     public void onSaveInstanceState(Bundle bundle) {
 
-        Log.d("BBBblf", "me");
         super.onSaveInstanceState(bundle);
         savedState = StateSaver.tryToSave(activity.isChangingConfigurations(), savedState, bundle, this);
     }

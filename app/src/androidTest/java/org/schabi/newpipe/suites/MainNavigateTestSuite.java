@@ -3,6 +3,7 @@ package org.schabi.newpipe.suites;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.schabi.newpipe.MainNavigateDownloadsTest;
+import org.schabi.newpipe.MainNavigateDrawerTest;
 import org.schabi.newpipe.MainNavigateSwitchServiceTest;
 import org.schabi.newpipe.MainNavigateTabsTest;
 
@@ -11,5 +12,6 @@ import org.schabi.newpipe.MainNavigateTabsTest;
 @Suite.SuiteClasses({
         MainNavigateDownloadsTest.class,
         MainNavigateSwitchServiceTest.class,
-        MainNavigateTabsTest.class})
+        MainNavigateTabsTest.class,
+        MainNavigateDrawerTest.class})
 public class MainNavigateTestSuite {}

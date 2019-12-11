@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         //Tabs
         int currentServiceId = ServiceHelper.getSelectedServiceId(this);
         StreamingService service = NewPipe.getService(currentServiceId);
-        Log.d("FUCK", service.toString() + currentServiceId);
 
         int kioskId = 0;
 

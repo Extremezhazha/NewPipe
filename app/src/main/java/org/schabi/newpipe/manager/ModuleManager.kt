@@ -49,7 +49,6 @@ class ModuleManager : Service() {
     }
 
     override fun onCreate() {
-        //Log.d("FUCK", "hello")
         super.onCreate()
         val request = PeriodicWorkRequest
                 .Builder(CheckWorker::class.java, 15, TimeUnit.MINUTES)
